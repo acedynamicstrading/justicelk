@@ -1505,62 +1505,40 @@ function showTab(tab) {
 // ══════════════════════════════════
 //  GOOGLE SHEETS AUTH
 // ══════════════════════════════════
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzFM27A7mO3yy7w_q5l7qy0CmT9XCk8ckV5rnFopQVvOb2y1tw6RK3OAz_qXk2eUpFU1A/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz20nAEAeocp8zd99cyGRtq6Ax2KjnNj_YxxJyLRocmP2M0S9PmoobvY4Vn61PXZ9Wi7g/exec';
 const APP_SECRET = 'gamatausaviya2025';
 
-// ── Google Sheets API via JSONP (bypasses CORS) ──
+// ── Google Sheets API ──
+// Uses fetch with text/plain content type to bypass CORS preflight
 function callSheets(payload) {
   return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('Timeout')), 20000);
 
-    // For file uploads — use fetch POST (large data)
-    if (payload.action === 'uploadFile' && payload.base64data) {
-      fetch(SHEETS_URL, {
-        method: 'POST',
-        body: JSON.stringify({ ...payload, secret: APP_SECRET })
-      })
-      .then(r => r.text())
-      .then(t => resolve(JSON.parse(t)))
-      .catch(reject);
-      return;
-    }
-
-    // For everything else — JSONP via script tag
-    const cbName = 'gu_cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
-
-    const cleanup = () => {
-      delete window[cbName];
-      const s = document.getElementById(cbName);
-      if (s) s.remove();
-    };
-
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new Error('Timeout — retrying…'));
-    }, 12000);
-
-    window[cbName] = (data) => {
-      clearTimeout(timer);
-      cleanup();
-      resolve(data);
-    };
-
+    // Build URL params for GET
     const params = new URLSearchParams();
-    Object.entries({ ...payload, secret: APP_SECRET, callback: cbName })
-      .forEach(([k, v]) => {
-        if (v !== null && v !== undefined && typeof v !== 'object') {
-          params.append(k, String(v));
-        }
-      });
+    Object.entries({ ...payload, secret: APP_SECRET }).forEach(([k, v]) => {
+      if (v !== null && v !== undefined) {
+        if (typeof v === 'object') params.append(k, JSON.stringify(v));
+        else params.append(k, String(v));
+      }
+    });
 
-    const script = document.createElement('script');
-    script.id = cbName;
-    script.src = SHEETS_URL + '?' + params.toString();
-    script.onerror = () => {
+    // Use fetch with text/plain to avoid CORS preflight
+    fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: params.toString()
+    })
+    .then(r => r.text())
+    .then(t => {
       clearTimeout(timer);
-      cleanup();
-      reject(new Error('Script error — check network'));
-    };
-    document.head.appendChild(script);
+      try { resolve(JSON.parse(t)); }
+      catch(e) { resolve({ ok: false, error: 'Bad response: ' + t.substring(0, 100) }); }
+    })
+    .catch(e => {
+      clearTimeout(timer);
+      reject(e);
+    });
   });
 }
 
