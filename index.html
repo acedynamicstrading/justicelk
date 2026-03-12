@@ -1505,57 +1505,60 @@ function showTab(tab) {
 // ══════════════════════════════════
 //  GOOGLE SHEETS AUTH
 // ══════════════════════════════════
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxB73xY0UCYSNHxU5HX7LXboC96XWgJO0jIlUQPu9PnDyHtbMNGfMVmcUUdkpkj4eHm/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzFM27A7mO3yy7w_q5l7qy0CmT9XCk8ckV5rnFopQVvOb2y1tw6RK3OAz_qXk2eUpFU1A/exec';
 const APP_SECRET = 'gamatausaviya2025';
 
 // ── Google Sheets API via JSONP (bypasses CORS) ──
 function callSheets(payload) {
   return new Promise((resolve, reject) => {
-    const cbName = 'gu_cb_' + Date.now() + '_' + Math.floor(Math.random()*10000);
-    const timeout = setTimeout(() => {
-      delete window[cbName];
-      const script = document.getElementById(cbName);
-      if (script) script.remove();
-      reject(new Error('Request timed out — check internet connection'));
-    }, 15000);
 
-    window[cbName] = function(data) {
-      clearTimeout(timeout);
-      delete window[cbName];
-      const script = document.getElementById(cbName);
-      if (script) script.remove();
-      resolve(data);
-    };
-
-    const params = new URLSearchParams({
-      ...payload,
-      secret:   APP_SECRET,
-      callback: cbName
-    });
-
-    // For large file uploads use fetch POST instead of JSONP
+    // For file uploads — use fetch POST (large data)
     if (payload.action === 'uploadFile' && payload.base64data) {
-      clearTimeout(timeout);
-      delete window[cbName];
       fetch(SHEETS_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...payload, secret: APP_SECRET })
       })
-      .then(r => r.json())
-      .then(resolve)
+      .then(r => r.text())
+      .then(t => resolve(JSON.parse(t)))
       .catch(reject);
       return;
     }
 
+    // For everything else — JSONP via script tag
+    const cbName = 'gu_cb_' + Date.now() + '_' + Math.floor(Math.random() * 99999);
+
+    const cleanup = () => {
+      delete window[cbName];
+      const s = document.getElementById(cbName);
+      if (s) s.remove();
+    };
+
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error('Timeout — retrying…'));
+    }, 12000);
+
+    window[cbName] = (data) => {
+      clearTimeout(timer);
+      cleanup();
+      resolve(data);
+    };
+
+    const params = new URLSearchParams();
+    Object.entries({ ...payload, secret: APP_SECRET, callback: cbName })
+      .forEach(([k, v]) => {
+        if (v !== null && v !== undefined && typeof v !== 'object') {
+          params.append(k, String(v));
+        }
+      });
+
     const script = document.createElement('script');
-    script.id  = cbName;
+    script.id = cbName;
     script.src = SHEETS_URL + '?' + params.toString();
     script.onerror = () => {
-      clearTimeout(timeout);
-      delete window[cbName];
-      script.remove();
-      reject(new Error('Script load failed'));
+      clearTimeout(timer);
+      cleanup();
+      reject(new Error('Script error — check network'));
     };
     document.head.appendChild(script);
   });
