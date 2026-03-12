@@ -1502,14 +1502,14 @@ function showTab(tab) {
 // ══════════════════════════════════
 //  GOOGLE SHEETS AUTH
 // ══════════════════════════════════
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwjEHQ9GTKMWksCYHoGPhlQfoFDspPoW2JdOlA3t2rrr9eI6uJLA1m9GNsCirusw_Sm/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzGrAXeK6if1PAhNq0pOLrXouWzY_cfFOXt-gb5eRmNzq9GG4IWaLPp_FAq-skLciiJ/exec';
 const APP_SECRET = 'gamatausaviya2025';
 
 async function callSheets(payload) {
-  const res = await fetch(SHEETS_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...payload, secret: APP_SECRET })
+  const params = new URLSearchParams({ ...payload, secret: APP_SECRET });
+  const res = await fetch(SHEETS_URL + '?' + params.toString(), {
+    method: 'GET',
+    redirect: 'follow'
   });
   return await res.json();
 }
