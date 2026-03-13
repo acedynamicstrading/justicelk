@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ගමට උසාවිය — Case Management System</title>
+<title>JusticeLK — Case Management System</title>
 <meta name="description" content="Rural Legal Aid Case Management — Sri Lanka. Helping villagers access justice.">
 <meta name="theme-color" content="#0B6E7A">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ගමට උසාවිය">
+<meta name="apple-mobile-web-app-title" content="JusticeLK">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Sinhala:wght@300;400;600;700&family=Noto+Sans+Tamil:wght@400;600&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -649,7 +649,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;}
 <div id="screen-login" class="screen active">
   <div class="login-emblem">⚖</div>
   <div class="login-box">
-    <h1 class="login-title">ගමට උසාවිය</h1>
+    <h1 class="login-title">JusticeLK</h1>
     <div class="login-sub">
       Rural Legal Aid Case Management
       <span class="login-si">ක්ෂේත්‍ර නිලධාරී පද්ධතිය · அலுவலக அமைப்பு</span>
@@ -709,7 +709,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;}
     <div class="topbar-brand">
       <span class="topbar-brand-icon">⚖</span>
       <div>
-        <div class="topbar-brand-name">ගමට උසාවිය CMS</div>
+        <div class="topbar-brand-name">JusticeLK CMS</div>
         <div class="topbar-brand-si">Rural Legal Aid · Case Management</div>
       </div>
     </div>
@@ -718,9 +718,13 @@ h1,h2,h3{font-family:'DM Serif Display',serif;}
       <button class="nav-tab" onclick="showTab('newcase')">➕ New Case</button>
       <button class="nav-tab admin-only" onclick="showTab('allcases')" style="display:none;">📂 All Cases</button>
       <button class="nav-tab admin-only" onclick="showTab('users')" style="display:none;">👥 Users</button>
+      <button class="nav-tab admin-only" onclick="showTab('lawyers')" style="display:none;">⚖️ Lawyers</button>
       <button class="nav-tab" onclick="showTab('track')">🔍 Track</button>
     </div>
     <div class="topbar-right">
+      <a href="about.html" style="color:var(--teal-bright);font-size:0.78rem;text-decoration:none;font-weight:600;" title="Platform Home">🏠 Home</a>
+      <a href="kids.html" style="color:var(--teal-bright);font-size:0.78rem;text-decoration:none;font-weight:600;" title="LexLK Kids">👶 Kids</a>
+      <a href="minor-protection.html" style="color:var(--teal-bright);font-size:0.78rem;text-decoration:none;font-weight:600;" title="Safe Help Portal">🛡 Safe Help</a>
       <div class="ai-engine-badge admin-only" onclick="openSettings()" title="AI Engine Settings" id="ai-engine-indicator" style="display:none;">
         <div class="dot"></div><span id="ai-engine-label">Groq</span> ⚙
       </div>
@@ -864,6 +868,50 @@ h1,h2,h3{font-family:'DM Serif Display',serif;}
       </div>
     </div>
 
+    <!-- ══ LAWYER APPLICATIONS TAB ══ -->
+    <div id="tab-lawyers" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2 style="font-size:1.5rem;">Attorney Applications</h2>
+          <p style="color:var(--muted);font-size:0.85rem;margin-top:3px;">Review, approve, or reject lawyer registrations from the portal.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <select id="la-filter-status" onchange="loadLawyerApps()" style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;background:var(--navy-mid);color:var(--text);font-size:0.85rem;">
+            <option value="">All Statuses</option>
+            <option value="Pending Review">Pending Review</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+          <button class="btn-outline" onclick="loadLawyerApps()" style="padding:8px 14px;font-size:0.85rem;">↻ Refresh</button>
+        </div>
+      </div>
+
+      <div style="background:var(--navy-mid);border:1px solid var(--border);border-radius:var(--r);padding:20px;">
+        <div id="la-loading" style="text-align:center;padding:32px;"><div class="ai-spinner-inline" style="justify-content:center;"><div class="ai-spin"></div> Loading applications…</div></div>
+        <div id="la-empty" style="display:none;text-align:center;padding:40px;color:var(--muted);">No applications found.</div>
+        <div id="la-list" style="display:none;">
+          <table class="case-table" style="width:100%;">
+            <thead><tr>
+              <th>Ref</th><th>Name</th><th>District</th><th>Type</th><th>Specialisations</th><th>Status</th><th>Submitted</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="la-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LAWYER APP DETAIL MODAL -->
+<div class="modal-overlay" id="la-modal">
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-header">
+      <div class="modal-title" id="la-modal-title">Attorney Application</div>
+      <button class="modal-close" onclick="document.getElementById('la-modal').style.display='none'">✕</button>
+    </div>
+    <div class="modal-body" id="la-modal-body"></div>
+    <div class="modal-footer" id="la-modal-footer"></div>
   </div>
 </div>
 
@@ -1196,7 +1244,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;}
         <!-- Lawyer selection panel — shown only if 'yes' -->
         <div id="lawyer-panel" style="display:none;margin-top:20px;">
           <div class="form-section-title">Select a Registered Lawyer <span class="required-star">*</span></div>
-          <div class="info-box" style="margin-bottom:12px;">These are attorneys registered on the ගමට උසාවිය network. They have paid to be listed and have agreed to our service standards. The case file and documents will be sent to the selected lawyer automatically upon submission.</div>
+          <div class="info-box" style="margin-bottom:12px;">These are attorneys registered on the JusticeLK network. They have paid to be listed and have agreed to our service standards. The case file and documents will be sent to the selected lawyer automatically upon submission.</div>
           <div class="lawyer-grid" id="lawyer-grid"></div>
         </div>
 
@@ -1489,7 +1537,7 @@ function showScreen(id) {
   document.getElementById('screen-'+id).classList.add('active');
 }
 function showTab(tab) {
-  ['dashboard','newcase','allcases','track','users'].forEach(t => {
+  ['dashboard','newcase','allcases','track','users','lawyers'].forEach(t => {
     const el = document.getElementById('tab-'+t);
     if (el) el.style.display = (t===tab)?'block':'none';
   });
@@ -1500,6 +1548,7 @@ function showTab(tab) {
   if (tab==='allcases')  renderAllCases();
   if (tab==='dashboard') renderDashboard();
   if (tab==='users')     loadUsers();
+  if (tab==='lawyers')   loadLawyerApps();
 }
 
 // ══════════════════════════════════
@@ -2316,7 +2365,7 @@ function renderTokenReceipt(c){
         <div class="next-step-item"><div class="next-step-num">3</div><div>${c.lawyer?`Your lawyer <strong>${c.lawyer.name}</strong> will contact you at ${c.mobile} to arrange a meeting.`:`The Legal Aid Commission will contact you at ${c.mobile} to assign your lawyer.`}</div></div>
         <div class="next-step-item"><div class="next-step-num">4</div><div>You will receive a printed <strong>Client Copy</strong> (below) which you can take directly to the court or lawyer if needed.</div></div>
       </div>
-      <div class="sms-notice"><strong>📱 ${c.contactPref} Sent:</strong> "ගමට උසාවිය: Token: <strong>${c.token}</strong>. ඔබේ නඩුව ${c.route} ට යොමු කෙරිණ. ${c.files.length} ලේඛනයක් ගොනු කෙරිණ. ප්‍රශ්නයක් ඇත්නම්: +94 77 362 2211"</div>
+      <div class="sms-notice"><strong>📱 ${c.contactPref} Sent:</strong> "JusticeLK: Token: <strong>${c.token}</strong>. ඔබේ නඩුව ${c.route} ට යොමු කෙරිණ. ${c.files.length} ලේඛනයක් ගොනු කෙරිණ. ප්‍රශ්නයක් ඇත්නම්: +94 77 362 2211"</div>
     </div>`;
 }
 
@@ -2434,7 +2483,7 @@ async function generateAISummary(c) {
     si:'Write in both formal Sinhala (සිංහල) and English. Sinhala first, then English.',
     ta:'Write in both formal Tamil (தமிழ்) and English. Tamil first, then English.'
   };
-  const prompt=`You are a Sri Lankan legal case summariser for the rural legal aid programme ගමට උසාවිය (Gamata Usaviya).
+  const prompt=`You are a Sri Lankan legal case summariser for the rural legal aid programme JusticeLK.
 Generate a CASE SUMMARY DOCUMENT. ${langInstr[c.lang]||langInstr.en}
 Token: ${c.token} | Date: ${c.created}
 Client: ${c.client} | NIC: ${c.nic} | District: ${c.district}
@@ -2641,7 +2690,7 @@ function printPetition() {
       <div style="font-size:9pt;color:#666;margin-bottom:6px;">DEMOCRATIC SOCIALIST REPUBLIC OF SRI LANKA</div>
       <div class="petition-court-name">${c.court}</div>
       <div class="petition-case-type">${caseTypeLabel(c.caseType).toUpperCase()} — CASE REFERENCE: ${c.token}</div>
-      <div style="font-size:9pt;color:#666;margin-top:4px;">Filed via ගමට උසාවිය Rural Legal Aid Programme</div>
+      <div style="font-size:9pt;color:#666;margin-top:4px;">Filed via JusticeLK Rural Legal Aid Programme</div>
     </div>
 
     <div style="font-size:9pt;text-align:right;margin-bottom:12px;color:#666;">Date: ${c.created}</div>
@@ -2652,7 +2701,7 @@ function printPetition() {
       <strong>DOCUMENTS FILED WITH THIS PETITION:</strong><br>
       ${c.files.length ? c.files.map((f,i)=>`${i+1}. ${f.name||f}`).join('<br>') : 'Documents to be produced at hearing.'}<br><br>
       <strong>CASE TOKEN NUMBER: ${c.token}</strong> — Track at: acedynamicstrading.github.io/gamatausaviya<br>
-      Contact: +94 77 362 2211 (LexLK / ගමට උසාවිය)
+      Contact: +94 77 362 2211 (LexLK / JusticeLK)
     </div>
 
     <div class="petition-footer-sigs">
@@ -2662,7 +2711,7 @@ function printPetition() {
     </div>
 
     <div class="petition-disclaimer">
-      This petition was drafted with AI assistance through the ගමට උසාවිය Rural Legal Aid Programme and reviewed by a Field Officer.
+      This petition was drafted with AI assistance through the JusticeLK Rural Legal Aid Programme and reviewed by a Field Officer.
       It does not constitute formal legal advice. The Petitioner is advised to have this document reviewed by a qualified Sri Lankan
       attorney (available free via the Legal Aid Commission) before or after filing. All citations must be verified independently.
       LexLK · +94 77 362 2211 · +94 71 769 8609
@@ -2688,7 +2737,7 @@ function printClientCopy(){
   const langLabels={si:'සිංහල',ta:'தமிழ்',en:'English'};
   document.getElementById('print-page-content').innerHTML=`
     <div class="print-header">
-      <div style="font-size:13pt;font-weight:700;margin-bottom:2px;">⚖ ගමට උසාවිය — GAMATA USAVIYA</div>
+      <div style="font-size:13pt;font-weight:700;margin-bottom:2px;">⚖ JusticeLK</div>
       <div class="print-sub">Rural Legal Aid Programme · Sri Lanka</div>
       <div class="print-sub">Legal Aid Commission · Provincial Courts · LexLK Network</div>
       <div class="print-sub">Contact: +94 77 362 2211 | +94 71 769 8609</div>
@@ -2738,7 +2787,7 @@ function printClientCopy(){
       <div class="print-sig-line">Date<br>${c.created}</div>
     </div>
     <div class="print-footer">
-      ගමට උසාවිය — Rural Legal Aid · Powered by LexLK · +94 77 362 2211<br>
+      JusticeLK — Rural Legal Aid · Powered by LexLK · +94 77 362 2211<br>
       <span class="print-notice">This document was generated by an AI-assisted system and reviewed by a Field Officer. It does not constitute formal legal advice. All legal matters should be confirmed by a qualified Sri Lankan attorney before court proceedings.</span>
     </div>`;
 
@@ -2909,7 +2958,7 @@ setTimeout(loadSavedKeys, 100);
 <div id="pwa-install-bar">
   <div class="pwa-icon">⚖</div>
   <div class="pwa-text">
-    <strong>Install ගමට උසාවිය</strong>
+    <strong>Install JusticeLK</strong>
     <span>Works offline in villages · Add to home screen · No app store needed</span>
   </div>
   <div class="pwa-btns">
@@ -2920,7 +2969,7 @@ setTimeout(loadSavedKeys, 100);
 
 <!-- UPDATE AVAILABLE BAR -->
 <div id="pwa-update-bar">
-  <span>🔄 A new version of ගමට උසාවිය is available</span>
+  <span>🔄 A new version of JusticeLK is available</span>
   <button class="btn-gold" onclick="applyUpdate()" style="padding:5px 14px;font-size:0.8rem;">Update Now</button>
 </div>
 
@@ -2929,6 +2978,167 @@ setTimeout(loadSavedKeys, 100);
 
 <script>
 // ══════════════════════════════════
+
+// ══════════════════════════════════════
+//  LAWYER APPLICATIONS PANEL
+// ══════════════════════════════════════
+let lawyerAppsCache = [];
+
+async function loadLawyerApps() {
+  document.getElementById('la-loading').style.display = 'block';
+  document.getElementById('la-list').style.display   = 'none';
+  document.getElementById('la-empty').style.display  = 'none';
+
+  try {
+    const res  = await callSheets({ action: 'listLawyerApps', secret: APP_SECRET });
+    const apps = res.data || [];
+    lawyerAppsCache = apps;
+
+    const filter = document.getElementById('la-filter-status')?.value || '';
+    const filtered = filter ? apps.filter(a => a.status === filter) : apps;
+
+    document.getElementById('la-loading').style.display = 'none';
+
+    if (!filtered.length) {
+      document.getElementById('la-empty').style.display = 'block';
+      return;
+    }
+
+    const tbody = document.getElementById('la-tbody');
+    tbody.innerHTML = filtered.map(a => `
+      <tr>
+        <td><span style="font-family:monospace;font-size:0.82rem;color:var(--gold);">${a.ref||'—'}</span></td>
+        <td><strong>${a.name||'—'}</strong><br><span style="font-size:0.75rem;color:var(--muted);">${a.email||''}</span></td>
+        <td>${a.district||'—'}</td>
+        <td><span style="font-size:0.78rem;">${a.regType||'—'}</span></td>
+        <td><span style="font-size:0.75rem;color:var(--muted);">${(a.specialisations||'').split(',').slice(0,2).join(', ')}${(a.specialisations||'').split(',').length>2?'…':''}</span></td>
+        <td>${laStatusBadge(a.status)}</td>
+        <td style="font-size:0.78rem;color:var(--muted);">${a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-GB') : '—'}</td>
+        <td>
+          <button class="btn-sm btn-sm-teal" onclick="viewLawyerApp('${a.ref}')">View</button>
+        </td>
+      </tr>`).join('');
+
+    document.getElementById('la-list').style.display = 'block';
+  } catch(e) {
+    document.getElementById('la-loading').style.display = 'none';
+    document.getElementById('la-empty').style.display  = 'block';
+    document.getElementById('la-empty').textContent    = 'Error loading: ' + e.message;
+  }
+}
+
+function laStatusBadge(status) {
+  const map = {
+    'Pending Review': 'background:#FEF3C7;color:#B45309;',
+    'Approved':       'background:#D1FAE5;color:#065F46;',
+    'Rejected':       'background:#FEE2E2;color:#991B1B;',
+  };
+  const s = map[status] || 'background:var(--border);color:var(--muted);';
+  return `<span style="padding:3px 9px;border-radius:99px;font-size:0.75rem;font-weight:700;${s}">${status||'Unknown'}</span>`;
+}
+
+function viewLawyerApp(ref) {
+  const app = lawyerAppsCache.find(a => a.ref === ref);
+  if (!app) return;
+
+  const modal = document.getElementById('la-modal');
+  document.getElementById('la-modal-title').textContent = `Application: ${app.ref}`;
+
+  document.getElementById('la-modal-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div>
+        <div class="detail-label">Full Name</div><div class="detail-value">${app.name||'—'}</div>
+      </div>
+      <div>
+        <div class="detail-label">NIC</div><div class="detail-value">${app.nic||'—'}</div>
+      </div>
+      <div>
+        <div class="detail-label">Mobile</div><div class="detail-value">${app.mobile||'—'}</div>
+      </div>
+      <div>
+        <div class="detail-label">Email</div><div class="detail-value">${app.email||'—'}</div>
+      </div>
+      <div>
+        <div class="detail-label">District</div><div class="detail-value">${app.district||'—'}</div>
+      </div>
+      <div>
+        <div class="detail-label">Registration Type</div><div class="detail-value">${app.regType||'—'}</div>
+      </div>
+      <div>
+        <div class="detail-label">Bar No.</div><div class="detail-value">${app.barNum||'—'}</div>
+      </div>
+      <div>
+        <div class="detail-label">Year Called</div><div class="detail-value">${app.year||'—'}</div>
+      </div>
+      <div>
+        <div class="detail-label">Consultation Fee</div><div class="detail-value">${app.fee||'—'}</div>
+      </div>
+      <div>
+        <div class="detail-label">Plan</div><div class="detail-value">${app.plan||'—'}</div>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div class="detail-label">Specialisations</div>
+      <div class="detail-value">${app.specialisations||'—'}</div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div class="detail-label">Languages</div>
+      <div class="detail-value">${app.languages||'—'}</div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div class="detail-label">Courts</div>
+      <div class="detail-value">${app.courts||'—'}</div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div class="detail-label">Professional Bio</div>
+      <div style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;font-size:0.88rem;line-height:1.6;">${app.bio||'Not provided'}</div>
+    </div>
+    ${app.barCertUrl ? `<div style="margin-bottom:10px;"><div class="detail-label">Bar Certificate</div><a href="${app.barCertUrl}" target="_blank" style="color:var(--teal);font-size:0.85rem;">📎 View Document</a></div>` : ''}
+    ${app.nicPhotoUrl ? `<div style="margin-bottom:10px;"><div class="detail-label">NIC Photo</div><a href="${app.nicPhotoUrl}" target="_blank" style="color:var(--teal);font-size:0.85rem;">📎 View Document</a></div>` : ''}
+    ${app.profilePhotoUrl ? `<div style="margin-bottom:10px;"><div class="detail-label">Profile Photo</div><a href="${app.profilePhotoUrl}" target="_blank" style="color:var(--teal);font-size:0.85rem;">📎 View Photo</a></div>` : ''}
+    <div style="margin-top:12px;">
+      <div class="detail-label">Admin Notes</div>
+      <textarea id="la-notes" rows="3" placeholder="Add internal notes about this application…" style="width:100%;padding:10px;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.88rem;resize:vertical;">${app.notes||''}</textarea>
+    </div>`;
+
+  document.getElementById('la-modal-footer').innerHTML = `
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-outline" onclick="updateLawyerStatus('${ref}','Rejected')">✕ Reject</button>
+      <button class="btn-gold" onclick="updateLawyerStatus('${ref}','Approved')">✓ Approve → Add to Directory</button>
+      <button class="btn-outline" style="margin-left:auto;" onclick="document.getElementById('la-modal').style.display='none'">Close</button>
+    </div>`;
+
+  modal.style.display = 'flex';
+}
+
+async function updateLawyerStatus(ref, newStatus) {
+  const app = lawyerAppsCache.find(a => a.ref === ref);
+  if (!app) return;
+  const notes = document.getElementById('la-notes')?.value || '';
+
+  if (!confirm(`Set status to "${newStatus}" for ${app.name}?`)) return;
+
+  try {
+    await callSheets({
+      action: 'updateLawyerApp',
+      secret: APP_SECRET,
+      ref,
+      status: newStatus,
+      notes
+    });
+
+    // Update cache
+    app.status = newStatus;
+    app.notes  = notes;
+
+    document.getElementById('la-modal').style.display = 'none';
+    showToast(`✓ ${app.name} — ${newStatus}`, 'success');
+    loadLawyerApps();
+  } catch(e) {
+    showToast('Error: ' + e.message, 'error');
+  }
+}
+
 //  SERVICE WORKER + PWA
 // ══════════════════════════════════
 let deferredInstallPrompt = null;

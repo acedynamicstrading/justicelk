@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Attorney Registration — ගමට උසාවිය · LexLK</title>
+<title>Attorney Registration — JusticeLK · LexLK</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1a0a00">
-<meta name="description" content="Register as an attorney on the ගමට උසාවිය Rural Legal Aid Network — LexLK Sri Lanka">
+<meta name="description" content="Register as an attorney on the JusticeLK Rural Legal Aid Network — LexLK Sri Lanka">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Sinhala:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -273,6 +273,15 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
 .alert-success{background:rgba(26,92,46,0.08);border:1px solid rgba(26,92,46,0.3);color:var(--green);}
 
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.ham-btn{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:6px;z-index:300;}
+.ham-btn span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:all 0.3s;}
+.ham-drawer{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(13,27,42,0.98);backdrop-filter:blur(8px);z-index:290;flex-direction:column;align-items:center;justify-content:center;gap:22px;}
+.ham-drawer.open{display:flex;}
+.ham-drawer a{color:#fff;text-decoration:none;font-size:1.15rem;font-weight:700;}
+.ham-drawer a:hover{color:#D4A843;}
+.ham-drawer .ham-cta{background:#D4A843;color:#0D1B2A!important;padding:12px 32px;border-radius:8px;}
+.ham-drawer .ham-close{position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;}
 @media(max-width:768px){
   .hero{grid-template-columns:1fr;}
   .benefits-card{display:none;}
@@ -282,7 +291,9 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
   .spec-grid{grid-template-columns:1fr 1fr;}
   .fee-select-grid{grid-template-columns:1fr;}
   .testimonials{grid-template-columns:1fr;}
-  .site-header{padding:0 20px;}
+  .site-header{padding:0 16px;}
+  .header-nav{display:none;}
+  .ham-btn{display:flex;}
   .section,.hero{padding:40px 20px;}
 }
 </style>
@@ -294,16 +305,31 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
   <a href="index.html" class="header-brand">
     <div class="header-emblem">⚖</div>
     <div>
-      <div class="header-name">ගමට උසාවිය</div>
+      <div class="header-name">JusticeLK</div>
       <div class="header-sub">Rural Legal Aid · LexLK</div>
     </div>
   </a>
   <nav class="header-nav">
-    <a href="index.html" class="header-link">Case System</a>
+    <a href="about.html" class="header-link">🏠 Home</a>
+    <a href="index.html" class="header-link">JusticeLK CMS</a>
+    <a href="kids.html" class="header-link">Kids</a>
+    <a href="minor-protection.html" class="header-link">🛡 Safe Help</a>
     <a href="tel:+94773622211" class="header-link">+94 77 362 2211</a>
     <a href="#registration-form" class="btn-register-nav">Register Now</a>
   </nav>
+  <button class="ham-btn" onclick="toggleHamMenu()"><span></span><span></span><span></span></button>
 </header>
+
+<!-- MOBILE DRAWER -->
+<div class="ham-drawer" id="ham-drawer">
+  <button class="ham-close" onclick="toggleHamMenu()">✕</button>
+  <a href="about.html" onclick="toggleHamMenu()">🏠 Platform Home</a>
+  <a href="index.html" onclick="toggleHamMenu()">⚖ JusticeLK CMS</a>
+  <a href="kids.html" onclick="toggleHamMenu()">👶 LexLK Kids</a>
+  <a href="minor-protection.html" onclick="toggleHamMenu()">🛡 Safe Help</a>
+  <a href="tel:+94773622211" onclick="toggleHamMenu()">📞 +94 77 362 2211</a>
+  <a href="#registration-form" class="ham-cta" onclick="toggleHamMenu()">Register Now →</a>
+</div>
 
 <!-- HERO -->
 <section style="background:var(--parchment-mid);border-bottom:1px solid var(--border);">
@@ -311,9 +337,9 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
     <div>
       <div class="hero-eyebrow">LexLK Attorney Network</div>
       <h1 class="hero-title">Join Sri Lanka's<br><em>Rural Justice</em><br>Network</h1>
-      <p class="hero-si si">ගමට උසාවිය නෛතික ජාලයට සම්බන්ධ වන්න</p>
+      <p class="hero-si si">JusticeLK නෛතික ජාලයට සම්බන්ධ වන්න</p>
       <p class="hero-desc">
-        Register on ගමට උසාවිය and receive pre-qualified rural legal cases directly to your inbox —
+        Register on JusticeLK and receive pre-qualified rural legal cases directly to your inbox —
         complete with AI-generated case summaries, all uploaded documents, and verified client details.
         You focus on the law. We handle the intake.
       </p>
@@ -365,7 +391,7 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
 <div class="divider"></div>
 <section class="section">
   <h2 class="section-title">How It Works</h2>
-  <p class="section-sub">From village to courtroom — here's how cases flow through the ගමට උසාවිය network to registered attorneys.</p>
+  <p class="section-sub">From village to courtroom — here's how cases flow through the JusticeLK network to registered attorneys.</p>
   <div class="steps-grid">
     <div class="step-card">
       <div class="step-num">1</div>
@@ -405,7 +431,7 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
       <div class="success-ref" id="success-ref-num">APP-2025-000001</div>
       <p class="success-desc">Your application has been received. The LexLK team will review your credentials and contact you within <strong>2 business days</strong>. Keep your application reference number safe.</p>
       <div class="next-steps-list">
-        <div class="ns-item"><div class="ns-num">1</div><div class="ns-text">Watch for an email from <strong>lexlk@gmail.com</strong> or a call from <strong>+94 77 362 2211</strong> confirming your registration.</div></div>
+        <div class="ns-item"><div class="ns-num">1</div><div class="ns-text">Watch for an email from <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4821262e2708242d302423662b2725">[email&#160;protected]</a></strong> or a call from <strong>+94 77 362 2211</strong> confirming your registration.</div></div>
         <div class="ns-item"><div class="ns-num">2</div><div class="ns-text">Prepare your original Bar Association certificate and NIC — you may be asked to verify these in person or by photo.</div></div>
         <div class="ns-item"><div class="ns-num">3</div><div class="ns-text">Once approved, your profile will go live on the network. Cases matching your district and specialisation will be sent to you automatically.</div></div>
         <div class="ns-item"><div class="ns-num">4</div><div class="ns-text">Registration fee payment instructions will be shared after profile approval. No upfront payment required to apply.</div></div>
@@ -511,7 +537,7 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
       <!-- SPECIALISATIONS -->
       <div class="form-section">
         <div class="form-section-label">Case Specialisations <span class="req">*</span></div>
-        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;">Select all case types you are willing to handle from the ගමට උසාවිය network.</p>
+        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;">Select all case types you are willing to handle from the JusticeLK network.</p>
         <div class="spec-grid" id="spec-grid">
           <label class="spec-check" onclick="toggleSpec(this)"><input type="checkbox" value="land"><div class="spec-dot"></div>🏡 Land & Property</label>
           <label class="spec-check" onclick="toggleSpec(this)"><input type="checkbox" value="family"><div class="spec-dot"></div>👨‍👩‍👧 Family / Divorce</label>
@@ -630,7 +656,7 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
           </div>
           <div class="check-row">
             <input type="checkbox" id="c2">
-            <label for="c2">I agree to handle cases referred through ගමට උසාවිය with the same professional standard required by the BASL code of conduct, and to update the system on case progress using the token tracking system.</label>
+            <label for="c2">I agree to handle cases referred through JusticeLK with the same professional standard required by the BASL code of conduct, and to update the system on case progress using the token tracking system.</label>
           </div>
           <div class="check-row">
             <input type="checkbox" id="c3">
@@ -638,7 +664,7 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
           </div>
           <div class="check-row">
             <input type="checkbox" id="c4">
-            <label for="c4">I consent to my name, registration number, district, specialisations, and fee range being displayed to clients on the ගමට උසාවිය case management system.</label>
+            <label for="c4">I consent to my name, registration number, district, specialisations, and fee range being displayed to clients on the JusticeLK case management system.</label>
           </div>
         </div>
       </div>
@@ -661,7 +687,7 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
 <div class="divider"></div>
 <section class="section">
   <h2 class="section-title">From Our Network</h2>
-  <p class="section-sub">Attorneys already registered on the ගමට උසාවිය network.</p>
+  <p class="section-sub">Attorneys already registered on the JusticeLK network.</p>
   <div class="testimonials">
     <div class="testimonial">
       <p class="t-quote">"The AI case summaries save me at least an hour per client. By the time I pick up the phone, I already know the facts, the documents, and what the client wants."</p>
@@ -684,18 +710,22 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
 <!-- FOOTER -->
 <footer class="site-footer">
   <div>
-    <div class="footer-brand">ගමට උසාවිය · LexLK</div>
+    <div class="footer-brand">JusticeLK · LexLK</div>
     <div style="margin-top:4px;">Rural Legal Aid Programme · Sri Lanka · 2025</div>
   </div>
   <div class="footer-links">
-    <a href="index.html">Case System</a>
+    <a href="about.html">🏠 Platform Home</a>
+    <a href="index.html">JusticeLK CMS</a>
+    <a href="kids.html">LexLK Kids</a>
+    <a href="minor-protection.html">Minor Protection</a>
     <a href="tel:+94773622211">+94 77 362 2211</a>
-    <a href="tel:+94717698609">+94 71 769 8609</a>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── STATE ──
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz20nAEAeocp8zd99cyGRtq6Ax2KjnNj_YxxJyLRocmP2M0S9PmoobvY4Vn61PXZ9Wi7g/exec';
+const SHEETS_SECRET = 'gamatausaviya2025';
 const docs = { bar: null, nic: null, photo: null };
 let selectedFeeValue = 'Rs.10,000–20,000';
 let selectedPlanValue = 'biannual';
@@ -805,23 +835,94 @@ function submitRegistration() {
     status: 'Pending Review'
   };
 
-  console.log('[LexLK] New attorney registration:', registration);
+  const submitBtn = document.getElementById('submit-btn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting…';
 
-  // In production: POST to backend / Firebase / email
-  // For now: store in localStorage as demo
-  const existing = JSON.parse(localStorage.getItem('gu_lawyer_applications') || '[]');
-  existing.push(registration);
-  localStorage.setItem('gu_lawyer_applications', JSON.stringify(existing));
+  // Upload documents then save application
+  async function doSubmit() {
+    try {
+      // Upload bar certificate
+      let barCertUrl = '', nicPhotoUrl = '', profilePhotoUrl = '';
+      if (docs.bar) {
+        barCertUrl = await uploadDoc(docs.bar, refNum + '_bar_cert');
+      }
+      if (docs.nic) {
+        nicPhotoUrl = await uploadDoc(docs.nic, refNum + '_nic');
+      }
+      if (docs.photo) {
+        profilePhotoUrl = await uploadDoc(docs.photo, refNum + '_profile');
+      }
 
-  // Show success
-  document.getElementById('success-ref-num').textContent = refNum;
-  document.getElementById('form-state').style.display = 'none';
-  const ss = document.getElementById('success-screen');
-  ss.style.display = 'block';
-  ss.scrollIntoView({ behavior: 'smooth' });
+      // Save application to Google Sheet
+      const payload = {
+        action: 'saveLawyerApp',
+        secret: SHEETS_SECRET,
+        data: {
+          ref: registration.ref,
+          name: registration.name,
+          nic: registration.nic,
+          mobile: registration.mobile,
+          email: registration.email,
+          district: registration.district,
+          regType: registration.regType,
+          barNum: registration.barNum,
+          year: registration.year,
+          specialisations: registration.specialisations.join(', '),
+          fee: registration.fee,
+          plan: registration.plan,
+          bio: registration.bio,
+          courts: registration.courts.join(', '),
+          languages: registration.languages.join(', '),
+          status: 'Pending Review',
+          submittedAt: registration.submittedAt,
+          barCertUrl,
+          nicPhotoUrl,
+          profilePhotoUrl
+        }
+      };
 
-  // Disable submit button
-  document.getElementById('submit-btn').disabled = true;
+      const res = await fetch(SHEETS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Submission failed');
+
+      // Show success
+      document.getElementById('success-ref-num').textContent = refNum;
+      document.getElementById('form-state').style.display = 'none';
+      const ss = document.getElementById('success-screen');
+      ss.style.display = 'block';
+      ss.scrollIntoView({ behavior: 'smooth' });
+    } catch(err) {
+      showAlert('Submission failed: ' + err.message + '. Please try again.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Application';
+    }
+  }
+
+  doSubmit();
+}
+
+async function uploadDoc(docData, filename) {
+  // docData is base64 string like "data:image/jpeg;base64,..."
+  const payload = {
+    action: 'uploadLawyerDoc',
+    secret: SHEETS_SECRET,
+    filename: filename,
+    mimeType: docData.split(';')[0].replace('data:', ''),
+    data: docData.split(',')[1]
+  };
+  const res = await fetch(SHEETS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error('Upload failed: ' + filename);
+  return json.url || '';
 }
 
 function resetForm() {
@@ -843,11 +944,5 @@ function resetForm() {
 
 // ── SMOOTH SCROLL ──
 document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior:'smooth' }); }
-  });
+  a.addEventListener('click', e => { e.preventDefault(); const t=document.querySelector(a.getAttribute('href')); if(t) t.scrollIntoView({behavior:'smooth'}); });
 });
-</script>
-</body>
-</html>
