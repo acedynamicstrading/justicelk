@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JusticeLK — Case Management System</title>
-<meta name="description" content="Rural Legal Aid Case Management — Sri Lanka. Helping villagers access justice.">
+<title>Justice LK · යුක්තිය LK · நீதி LK — Case Management System</title>
+<meta name="description" content="National Legal Aid Case Management — Sri Lanka. Helping villagers access justice.">
 <meta name="theme-color" content="#0B6E7A">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="JusticeLK">
+<meta name="apple-mobile-web-app-title" content="Justice LK">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Sinhala:wght@300;400;600;700&family=Noto+Sans+Tamil:wght@400;600&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -649,9 +649,9 @@ h1,h2,h3{font-family:'DM Serif Display',serif;}
 <div id="screen-login" class="screen active">
   <div class="login-emblem">⚖</div>
   <div class="login-box">
-    <h1 class="login-title">JusticeLK</h1>
+    <h1 class="login-title">Justice LK</h1>
     <div class="login-sub">
-      Rural Legal Aid Case Management
+      National Legal Aid Case Management
       <span class="login-si">ක්ෂේත්‍ර නිලධාරී පද්ධතිය · அலுவலக அமைப்பு</span>
     </div>
     <div class="login-tabs">
@@ -709,8 +709,8 @@ h1,h2,h3{font-family:'DM Serif Display',serif;}
     <div class="topbar-brand">
       <span class="topbar-brand-icon">⚖</span>
       <div>
-        <div class="topbar-brand-name">JusticeLK CMS</div>
-        <div class="topbar-brand-si">Rural Legal Aid · Case Management</div>
+        <div class="topbar-brand-name">Justice LK · යුක්තිය LK · நீதி LK</div>
+        <div class="topbar-brand-si">National Digital Justice Access Programme</div>
       </div>
     </div>
     <div class="nav-tabs" id="app-nav">
@@ -723,7 +723,8 @@ h1,h2,h3{font-family:'DM Serif Display',serif;}
     </div>
     <div class="topbar-right">
       <a href="about.html" style="color:var(--teal-bright);font-size:0.78rem;text-decoration:none;font-weight:600;" title="Platform Home">🏠 Home</a>
-      <a href="kids.html" style="color:var(--teal-bright);font-size:0.78rem;text-decoration:none;font-weight:600;" title="LexLK Kids">👶 Kids</a>
+      <a href="kids.html" style="color:var(--teal-bright);font-size:0.78rem;text-decoration:none;font-weight:600;" title="Justice LK Kids">👶 Justice LK Kids</a>
+      <a href="lawyer-registration.html" style="color:var(--teal-bright);font-size:0.78rem;text-decoration:none;font-weight:600;" title="Lawyer Registration">⚖️ Lawyers</a>
       <a href="minor-protection.html" style="color:var(--teal-bright);font-size:0.78rem;text-decoration:none;font-weight:600;" title="Safe Help Portal">🛡 Safe Help</a>
       <div class="ai-engine-badge admin-only" onclick="openSettings()" title="AI Engine Settings" id="ai-engine-indicator" style="display:none;">
         <div class="dot"></div><span id="ai-engine-label">Groq</span> ⚙
@@ -1244,7 +1245,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;}
         <!-- Lawyer selection panel — shown only if 'yes' -->
         <div id="lawyer-panel" style="display:none;margin-top:20px;">
           <div class="form-section-title">Select a Registered Lawyer <span class="required-star">*</span></div>
-          <div class="info-box" style="margin-bottom:12px;">These are attorneys registered on the JusticeLK network. They have paid to be listed and have agreed to our service standards. The case file and documents will be sent to the selected lawyer automatically upon submission.</div>
+          <div class="info-box" style="margin-bottom:12px;">These are attorneys registered on the Justice LK network. They have paid to be listed and have agreed to our service standards. The case file and documents will be sent to the selected lawyer automatically upon submission.</div>
           <div class="lawyer-grid" id="lawyer-grid"></div>
         </div>
 
@@ -2365,7 +2366,7 @@ function renderTokenReceipt(c){
         <div class="next-step-item"><div class="next-step-num">3</div><div>${c.lawyer?`Your lawyer <strong>${c.lawyer.name}</strong> will contact you at ${c.mobile} to arrange a meeting.`:`The Legal Aid Commission will contact you at ${c.mobile} to assign your lawyer.`}</div></div>
         <div class="next-step-item"><div class="next-step-num">4</div><div>You will receive a printed <strong>Client Copy</strong> (below) which you can take directly to the court or lawyer if needed.</div></div>
       </div>
-      <div class="sms-notice"><strong>📱 ${c.contactPref} Sent:</strong> "JusticeLK: Token: <strong>${c.token}</strong>. ඔබේ නඩුව ${c.route} ට යොමු කෙරිණ. ${c.files.length} ලේඛනයක් ගොනු කෙරිණ. ප්‍රශ්නයක් ඇත්නම්: +94 77 362 2211"</div>
+      <div class="sms-notice"><strong>📱 ${c.contactPref} Sent:</strong> "Justice LK: Token: <strong>${c.token}</strong>. ඔබේ නඩුව ${c.route} ට යොමු කෙරිණ. ${c.files.length} ලේඛනයක් ගොනු කෙරිණ. ප්‍රශ්නයක් ඇත්නම්: +94 77 362 2211"</div>
     </div>`;
 }
 
@@ -2483,7 +2484,7 @@ async function generateAISummary(c) {
     si:'Write in both formal Sinhala (සිංහල) and English. Sinhala first, then English.',
     ta:'Write in both formal Tamil (தமிழ்) and English. Tamil first, then English.'
   };
-  const prompt=`You are a Sri Lankan legal case summariser for the rural legal aid programme JusticeLK.
+  const prompt=`You are a Sri Lankan legal case summariser for the national legal aid programme Justice LK.
 Generate a CASE SUMMARY DOCUMENT. ${langInstr[c.lang]||langInstr.en}
 Token: ${c.token} | Date: ${c.created}
 Client: ${c.client} | NIC: ${c.nic} | District: ${c.district}
@@ -2690,7 +2691,7 @@ function printPetition() {
       <div style="font-size:9pt;color:#666;margin-bottom:6px;">DEMOCRATIC SOCIALIST REPUBLIC OF SRI LANKA</div>
       <div class="petition-court-name">${c.court}</div>
       <div class="petition-case-type">${caseTypeLabel(c.caseType).toUpperCase()} — CASE REFERENCE: ${c.token}</div>
-      <div style="font-size:9pt;color:#666;margin-top:4px;">Filed via JusticeLK Rural Legal Aid Programme</div>
+      <div style="font-size:9pt;color:#666;margin-top:4px;">Filed via Justice LK National Legal Aid Programme</div>
     </div>
 
     <div style="font-size:9pt;text-align:right;margin-bottom:12px;color:#666;">Date: ${c.created}</div>
@@ -2700,8 +2701,8 @@ function printPetition() {
     <div class="petition-verification" style="margin-top:20px;">
       <strong>DOCUMENTS FILED WITH THIS PETITION:</strong><br>
       ${c.files.length ? c.files.map((f,i)=>`${i+1}. ${f.name||f}`).join('<br>') : 'Documents to be produced at hearing.'}<br><br>
-      <strong>CASE TOKEN NUMBER: ${c.token}</strong> — Track at: acedynamicstrading.github.io/gamatausaviya<br>
-      Contact: +94 77 362 2211 (LexLK / JusticeLK)
+      <strong>CASE TOKEN NUMBER: ${c.token}</strong> — Track at: acedynamicstrading.github.io/justicelk<br>
+      Contact: +94 77 362 2211 (Justice LK)
     </div>
 
     <div class="petition-footer-sigs">
@@ -2711,7 +2712,7 @@ function printPetition() {
     </div>
 
     <div class="petition-disclaimer">
-      This petition was drafted with AI assistance through the JusticeLK Rural Legal Aid Programme and reviewed by a Field Officer.
+      This petition was drafted with AI assistance through the Justice LK National Legal Aid Programme and reviewed by a Field Officer.
       It does not constitute formal legal advice. The Petitioner is advised to have this document reviewed by a qualified Sri Lankan
       attorney (available free via the Legal Aid Commission) before or after filing. All citations must be verified independently.
       LexLK · +94 77 362 2211 · +94 71 769 8609
@@ -2737,8 +2738,8 @@ function printClientCopy(){
   const langLabels={si:'සිංහල',ta:'தமிழ்',en:'English'};
   document.getElementById('print-page-content').innerHTML=`
     <div class="print-header">
-      <div style="font-size:13pt;font-weight:700;margin-bottom:2px;">⚖ JusticeLK</div>
-      <div class="print-sub">Rural Legal Aid Programme · Sri Lanka</div>
+      <div style="font-size:13pt;font-weight:700;margin-bottom:2px;">⚖ Justice LK</div>
+      <div class="print-sub">National Legal Aid Programme · Sri Lanka</div>
       <div class="print-sub">Legal Aid Commission · Provincial Courts · LexLK Network</div>
       <div class="print-sub">Contact: +94 77 362 2211 | +94 71 769 8609</div>
     </div>
@@ -2787,7 +2788,7 @@ function printClientCopy(){
       <div class="print-sig-line">Date<br>${c.created}</div>
     </div>
     <div class="print-footer">
-      JusticeLK — Rural Legal Aid · Powered by LexLK · +94 77 362 2211<br>
+      Justice LK · National Legal Aid · Powered by LexLK · +94 77 362 2211<br>
       <span class="print-notice">This document was generated by an AI-assisted system and reviewed by a Field Officer. It does not constitute formal legal advice. All legal matters should be confirmed by a qualified Sri Lankan attorney before court proceedings.</span>
     </div>`;
 
@@ -2958,7 +2959,7 @@ setTimeout(loadSavedKeys, 100);
 <div id="pwa-install-bar">
   <div class="pwa-icon">⚖</div>
   <div class="pwa-text">
-    <strong>Install JusticeLK</strong>
+    <strong>Install Justice LK</strong>
     <span>Works offline in villages · Add to home screen · No app store needed</span>
   </div>
   <div class="pwa-btns">
@@ -2969,7 +2970,7 @@ setTimeout(loadSavedKeys, 100);
 
 <!-- UPDATE AVAILABLE BAR -->
 <div id="pwa-update-bar">
-  <span>🔄 A new version of JusticeLK is available</span>
+  <span>🔄 A new version of Justice LK is available</span>
   <button class="btn-gold" onclick="applyUpdate()" style="padding:5px 14px;font-size:0.8rem;">Update Now</button>
 </div>
 
