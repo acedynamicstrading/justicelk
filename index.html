@@ -2377,6 +2377,23 @@ function saveSettings() { closeSettings(); }
 
 
 
+// ── AI CALL — routes through LexLK Cloudflare Worker ──
+async function callAI(prompt) {
+  const resp = await fetch('https://lexlk.acedynamicstrading.workers.dev', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'ask',
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!resp.ok) throw new Error('AI service error: ' + resp.status);
+  const data = await resp.json();
+  if (data.error) throw new Error(data.error);
+  if (!data.text) throw new Error('No response from AI');
+  return data.text;
+}
+
 async function generateAISummary(c) {
   document.getElementById('ai-summary-section').style.display='block';
   const names={groq:'Groq (Free)',ollama:'Ollama (Offline)',claude:'Claude',offline:'Offline'};
